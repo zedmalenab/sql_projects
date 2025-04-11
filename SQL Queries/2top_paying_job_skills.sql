@@ -25,8 +25,8 @@ ORDER BY
 )
 
 SELECT
-    top_paying_jobs.*,
-    skills_dim.skills
+    skills_dim.skills,
+    top_paying_jobs.*
 FROM top_paying_jobs
 INNER JOIN skills_job_dim AS skill_to_job
     ON top_paying_jobs.job_id = skill_to_job.job_id
@@ -35,6 +35,8 @@ INNER JOIN skills_dim
 
 ORDER BY 
     salary_year_avg DESC
+
+LIMIT 25
 
 /* 
 Here's the breakdown of the most demanded skills for data analyst in 2023 based on job postings:
