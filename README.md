@@ -63,8 +63,60 @@ Here are the breakdowns of the query above:
 ![Top Paying Roles](Assets/chart1.png)
 *Bar graph visualing the salary for the top 10 salaries for data analysts; ChatGPT generated this graph for my SQL Query results*
 
-## 2.
+## 2. Skills for Top Paying Jobs
+- To identify the skills for top paying jobs I joined job postings data with skills data providing emplpoyers value for high-compensation roles.
 
+```sql
+-- identifying top paying job skills from the previous table using CTE --
+WITH top_paying_jobs AS (
+SELECT
+    job_id,
+    job_title,
+    company_dim.name,
+    job_location,
+    job_schedule_type,
+    salary_year_avg,
+    job_posted_date
+FROM
+    job_postings_fact
+    LEFT JOIN company_dim
+    ON job_postings_fact.company_id = company_dim.company_id
+
+WHERE
+    job_title_short = 'Data Analyst' AND
+    job_location = 'Anywhere' AND
+    salary_year_avg IS NOT NULL
+
+ORDER BY 
+    salary_year_avg DESC
+
+)
+
+SELECT
+    skills_dim.skills,
+    top_paying_jobs.*
+FROM top_paying_jobs
+INNER JOIN skills_job_dim AS skill_to_job
+    ON top_paying_jobs.job_id = skill_to_job.job_id
+INNER JOIN skills_dim
+    ON skill_to_job.skill_id = skills_dim.skill_id
+
+ORDER BY 
+    salary_year_avg DESC
+
+LIMIT 25
+```
+Here are the breakdowns of the query above:
+
+![Top Paying Skills](Assets/chart2.png)
+*Bar graph visualing the salary for the top 10 salaries for data analysts; ClaudeAI generated this graph for my SQL Query results*
 
 #  What I learned
+Throughout making this project as a computer engineering graduate trying to go into data analytics:
+
+- **🧩 Complex Query Crafting: ** I learned thoroughly the advanced SQL function, merging tables, and using CTEs for more advance table merging.
+
+- **📈 Data Aggregation: ** I can say I am comfortable on using GROUP BY and turned aggregate functions like COUNT() and AVG as my asernal in data summarizing.
+- **🤯 Analytical Skill: ** With practive problems I found in different courses and internet like. I came up to answer different questions using different dataset to show my analytical skills.
+
 #  Conclusions
